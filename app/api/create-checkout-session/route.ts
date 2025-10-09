@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { stripe, validateStripe } from '@/lib/stripe';
 
 export async function POST(request: Request) {
   try {
+    // 実行時に環境変数をチェック
+    validateStripe();
+    
     const { priceId } = await request.json();
 
     if (!priceId) {
