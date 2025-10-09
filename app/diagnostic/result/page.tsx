@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 
-export default function DiagnosticResult() {
+function DiagnosticResultContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -340,5 +340,20 @@ export default function DiagnosticResult() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function DiagnosticResult() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-emerald-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-700 font-medium">読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <DiagnosticResultContent />
+    </Suspense>
   );
 }
