@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface TimelineItem {
@@ -18,7 +18,7 @@ interface Simulation {
   recommended_spots: Array<{ name: string; reason: string }>;
 }
 
-export default function SimulatorPage() {
+function SimulatorPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedAreaId = searchParams.get('area_id');
@@ -238,5 +238,20 @@ export default function SimulatorPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SimulatorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-700 font-medium">読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <SimulatorPageContent />
+    </Suspense>
   );
 }
