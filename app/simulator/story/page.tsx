@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -19,7 +19,7 @@ interface Simulation {
   recommended_spots: Array<{ name: string; reason: string }>;
 }
 
-export default function SimulatorStoryPage() {
+function SimulatorStoryPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedAreaId = searchParams.get('area_id');
@@ -236,5 +236,20 @@ export default function SimulatorStoryPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SimulatorStoryPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-emerald-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-700 font-medium">読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <SimulatorStoryPageContent />
+    </Suspense>
   );
 }
