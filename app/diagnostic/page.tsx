@@ -29,31 +29,34 @@ const questions: Question[] = [
     id: 'q1_work_mode',
     category: 'WORK STYLE',
     title: 'あなたの働き方について',
-    subtitle: '現在のワークスタイルを教えてください',
+    subtitle: '山形での働き方を教えてください',
     type: 'radio',
     options: [
       { value: 'remote_majority', label: 'フルリモート', description: '場所を選ばない働き方' },
       { value: 'hybrid', label: 'ハイブリッド', description: '週2-3日のオフィス勤務' },
-      { value: 'onsite', label: 'オフィス勤務', description: '毎日の通勤スタイル' }
+      { value: 'onsite', label: 'オフィス勤務', description: '山形市内での通勤' },
+      { value: 'local_business', label: '地元企業・起業', description: '山形で新しい仕事' }
     ]
   },
   {
-    id: 'q2_income_stability',
-    category: 'INCOME TYPE',
-    title: '収入形態を選択',
-    subtitle: 'メインの収入源について',
+    id: 'q2_age_group',
+    category: 'AGE',
+    title: '年齢層を選択',
+    subtitle: 'あなたの年齢層について',
     type: 'radio',
     options: [
-      { value: 'salary', label: '正社員・契約社員', description: '安定した給与所得' },
-      { value: 'freelance', label: 'フリーランス', description: '独立したプロフェッショナル' },
-      { value: 'business', label: '経営者・起業家', description: '事業オーナー' }
+      { value: '20s', label: '20代', description: '単身・カップル' },
+      { value: '30s', label: '30代', description: '子育て世代' },
+      { value: '40s', label: '40代', description: 'ファミリー' },
+      { value: '50s', label: '50代', description: 'セカンドライフ準備' },
+      { value: '60plus', label: '60代以上', description: 'リタイア世代' }
     ]
   },
   {
     id: 'q3_household',
     category: 'FAMILY',
     title: '家族構成について',
-    subtitle: '一緒に移住を検討される方',
+    subtitle: '一緒に山形へ移住される方',
     type: 'radio',
     options: [
       { value: 'single', label: 'シングル', description: '単身での移住' },
@@ -65,30 +68,44 @@ const questions: Question[] = [
     id: 'q4_priority',
     category: 'PRIORITY',
     title: '重視する要素',
-    subtitle: '移住先で最も大切にしたいこと',
+    subtitle: '山形での暮らしで最も大切にしたいこと',
     type: 'radio',
     options: [
-      { value: 'nature', label: '自然環境', description: '豊かな自然との共生' },
-      { value: 'education', label: '教育環境', description: '子供の教育機会' },
-      { value: 'medical', label: '医療・福祉', description: '充実した医療体制' },
-      { value: 'community', label: 'コミュニティ', description: '地域との繋がり' }
+      { value: 'onsen', label: '温泉・リラックス', description: '癒しの時間を大切に' },
+      { value: 'nature', label: '自然・農業体験', description: '豊かな自然との共生' },
+      { value: 'education', label: '子育て・教育', description: '子供の成長環境' },
+      { value: 'history', label: '歴史・文化', description: '伝統ある街並み' },
+      { value: 'commercial', label: '利便性', description: '買い物・交通の便' }
     ]
   },
   {
-    id: 'q5_budget',
+    id: 'q5_lifestyle',
+    category: 'LIFESTYLE',
+    title: '理想のライフスタイル',
+    subtitle: '山形でどんな暮らしがしたいですか',
+    type: 'radio',
+    options: [
+      { value: 'quiet', label: '静かな住環境', description: '落ち着いた住宅街' },
+      { value: 'active', label: '活気ある街', description: 'カフェや若者が集まる' },
+      { value: 'rural', label: '田舎暮らし', description: '田畑に囲まれた環境' },
+      { value: 'urban', label: '便利な都市部', description: '駅近・商業施設充実' }
+    ]
+  },
+  {
+    id: 'q6_budget',
     category: 'BUDGET',
     title: '月額予算',
     subtitle: '試住期間中の月額費用',
     type: 'radio',
     options: [
-      { value: 'under_150k', label: '〜15万円', description: 'ベーシックプラン' },
-      { value: '150k_250k', label: '15〜25万円', description: 'スタンダードプラン' },
-      { value: '250k_350k', label: '25〜35万円', description: 'プレミアムプラン' },
-      { value: 'over_350k', label: '35万円〜', description: 'エグゼクティブプラン' }
+      { value: 'under_100k', label: '〜10万円', description: 'ベーシックプラン' },
+      { value: '100k_150k', label: '10〜15万円', description: 'スタンダードプラン' },
+      { value: '150k_200k', label: '15〜20万円', description: 'プレミアムプラン' },
+      { value: 'over_200k', label: '20万円〜', description: 'エグゼクティブプラン' }
     ]
   },
   {
-    id: 'q6_duration',
+    id: 'q7_duration',
     category: 'DURATION',
     title: '試住期間',
     subtitle: 'ご希望の滞在期間',
@@ -98,19 +115,6 @@ const questions: Question[] = [
       { value: '2weeks', label: '2週間', description: 'しっかり体験' },
       { value: '1month', label: '1ヶ月', description: 'じっくり検討' },
       { value: '3months', label: '3ヶ月', description: '本格的な試住' }
-    ]
-  },
-  {
-    id: 'q7_timing',
-    category: 'TIMING',
-    title: '開始時期',
-    subtitle: 'いつから始めたいですか',
-    type: 'radio',
-    options: [
-      { value: 'immediate', label: '今すぐ', description: '1ヶ月以内' },
-      { value: 'soon', label: '近日中', description: '1-3ヶ月以内' },
-      { value: 'planning', label: '計画中', description: '3-6ヶ月以内' },
-      { value: 'future', label: '将来的に', description: '6ヶ月以上先' }
     ]
   }
 ];
@@ -199,7 +203,7 @@ export default function DiagnosticPage() {
             onClick={() => router.push('/')}
             className="text-2xl font-bold text-gray-900 hover:text-emerald-600 transition-colors"
           >
-            🏡 MIGRATION
+            🍒 山形移住ナビ
           </button>
           <button
             onClick={() => router.push('/')}
@@ -328,10 +332,10 @@ export default function DiagnosticPage() {
           <div className="text-center">
             <div className="w-20 h-20 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin mx-auto mb-8" />
             <h3 className="text-3xl font-bold text-gray-900 mb-3">
-              診断結果を分析中...
+              診断結果を分析中... 🍒
             </h3>
             <p className="text-sm font-medium text-emerald-600">
-              あなたにぴったりの移住先を探しています
+              あなたにぴったりの山形エリアを探しています
             </p>
           </div>
         </div>

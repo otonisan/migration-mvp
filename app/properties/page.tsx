@@ -32,6 +32,14 @@ interface Property {
   lng: number;
 }
 
+const AGE_GROUPS = {
+  '20s': { label: '20代', desc: '単身・カップル', icon: '✨', layouts: ['1K', '1LDK'] },
+  '30s': { label: '30代', desc: '子育て世代', icon: '👶', layouts: ['2DK', '2LDK', '3DK'] },
+  '40s': { label: '40代', desc: 'ファミリー', icon: '👨‍👩‍👧‍👦', layouts: ['2LDK', '3DK', '3LDK'] },
+  '50s': { label: '50代', desc: 'セカンドライフ', icon: '🌿', layouts: ['2LDK', '3LDK'] },
+  '60plus': { label: '60代以上', desc: 'リタイア世代', icon: '♨️', layouts: ['1LDK', '2DK', '2LDK'] },
+};
+
 export default function PropertiesPage() {
   const router = useRouter();
   const [properties, setProperties] = useState<Property[]>([]);
@@ -39,6 +47,7 @@ export default function PropertiesPage() {
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [compareList, setCompareList] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [ageGroup, setAgeGroup] = useState<string>('');
   const [filters, setFilters] = useState({
     prefecture: '',
     minRent: '',
@@ -90,6 +99,7 @@ export default function PropertiesPage() {
       maxRent: '',
       layout: '',
     });
+    setAgeGroup('');
   };
 
   const handleMarkerClick = (propertyId: string) => {
@@ -130,7 +140,7 @@ export default function PropertiesPage() {
             href="/" 
             className="text-2xl font-bold text-gray-900 hover:text-emerald-600 transition-colors"
           >
-            🏡 MIGRATION
+            🏡 山形移住ナビ
           </Link>
           <Link
             href="/dashboard"
@@ -150,11 +160,58 @@ export default function PropertiesPage() {
             }`}
           >
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-              🏠 物件検索
+              🏠 山形の物件検索
             </h1>
             <p className="text-lg font-medium text-gray-700">
               理想の住まいを見つけましょう
             </p>
+          </div>
+
+          {/* 年齢層フィルター */}
+          <div 
+            className={`bg-white border-2 border-emerald-200 rounded-2xl p-8 mb-8 shadow-lg transition-all duration-1000 delay-100 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <label className="block text-sm font-bold text-gray-700 mb-4">👤 年齢層（おすすめ間取りを表示）</label>
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+              <button
+                onClick={() => setAgeGroup('')}
+                className={`px-4 py-3 border-2 rounded-lg font-bold transition-all ${
+                  ageGroup === ''
+                    ? 'border-emerald-500 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg'
+                    : 'border-gray-300 text-gray-700 hover:border-emerald-400 hover:bg-emerald-50'
+                }`}
+              >
+                すべて
+              </button>
+              {Object.entries(AGE_GROUPS).map(([key, value]) => (
+                <button
+                  key={key}
+                  onClick={() => setAgeGroup(key)}
+                  className={`px-4 py-3 border-2 rounded-lg font-bold transition-all text-left ${
+                    ageGroup === key
+                      ? 'border-emerald-500 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg'
+                      : 'border-gray-300 text-gray-700 hover:border-emerald-400 hover:bg-emerald-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{value.icon}</span>
+                    <div>
+                      <div className="text-sm">{value.label}</div>
+                      <div className="text-xs opacity-75">{value.desc}</div>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            {ageGroup && (
+              <div className="mt-4 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                <p className="text-sm text-emerald-800 font-medium">
+                  💡 おすすめ間取り: {AGE_GROUPS[ageGroup as keyof typeof AGE_GROUPS].layouts.join('、')}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* フィルター */}
@@ -165,19 +222,14 @@ export default function PropertiesPage() {
           >
             <div className="grid md:grid-cols-4 gap-6 mb-6">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-3">📍 都道府県</label>
+                <label className="block text-sm font-bold text-gray-700 mb-3">📍 エリア</label>
                 <select
                   value={filters.prefecture}
                   onChange={(e) => handleFilterChange('prefecture', e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-900 font-medium focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all bg-white"
                 >
                   <option value="">全て</option>
-                  <option value="長野県">長野県</option>
-                  <option value="静岡県">静岡県</option>
-                  <option value="岡山県">岡山県</option>
-                  <option value="福岡県">福岡県</option>
-                  <option value="北海道">北海道</option>
-                  <option value="沖縄県">沖縄県</option>
+                  <option value="山形県">山形県</option>
                 </select>
               </div>
 
@@ -294,85 +346,98 @@ export default function PropertiesPage() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {properties.map((property, index) => (
-                <div
-                  key={property.id}
-                  className={`group bg-white border-2 border-emerald-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-emerald-300 transition-all duration-500 relative ${
-                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                  }`}
-                  style={{
-                    transitionDelay: `${index * 100 + 400}ms`,
-                  }}
-                >
-                  <div className="absolute top-4 left-4 z-20">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleCompare(property.id);
-                      }}
-                      className={`w-10 h-10 flex items-center justify-center rounded-lg font-bold transition-all shadow-lg ${
-                        compareList.includes(property.id)
-                          ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white'
-                          : 'bg-white border-2 border-emerald-300 text-emerald-600 hover:border-emerald-500'
-                      }`}
-                    >
-                      {compareList.includes(property.id) ? '✓' : '□'}
-                    </button>
-                  </div>
-
-                  <Link href={`/properties/${property.id}`}>
-                    <div className="relative h-64 overflow-hidden">
-                      <Image
-                        src={property.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'}
-                        alt={property.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-4 right-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg">
-                        ¥{property.rent.toLocaleString()}
+              {properties.map((property, index) => {
+                // 年齢層フィルターに基づいてハイライト
+                const isRecommended = ageGroup && AGE_GROUPS[ageGroup as keyof typeof AGE_GROUPS]?.layouts.includes(property.layout);
+                
+                return (
+                  <div
+                    key={property.id}
+                    className={`group bg-white border-2 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 relative ${
+                      isRecommended ? 'border-emerald-400 ring-2 ring-emerald-200' : 'border-emerald-200 hover:border-emerald-300'
+                    } ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+                    style={{
+                      transitionDelay: `${index * 100 + 400}ms`,
+                    }}
+                  >
+                    {isRecommended && (
+                      <div className="absolute top-4 right-4 z-20 bg-gradient-to-r from-amber-400 to-orange-500 text-white px-3 py-1 rounded-lg font-bold text-sm shadow-lg">
+                        おすすめ
                       </div>
+                    )}
+                    
+                    <div className="absolute top-4 left-4 z-20">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleCompare(property.id);
+                        }}
+                        className={`w-10 h-10 flex items-center justify-center rounded-lg font-bold transition-all shadow-lg ${
+                          compareList.includes(property.id)
+                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white'
+                            : 'bg-white border-2 border-emerald-300 text-emerald-600 hover:border-emerald-500'
+                        }`}
+                      >
+                        {compareList.includes(property.id) ? '✓' : '□'}
+                      </button>
                     </div>
 
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
-                        {property.title}
-                      </h3>
-                      <p className="text-sm text-gray-700 mb-4 font-medium">
-                        📍 {property.prefecture} {property.city}
-                      </p>
-
-                      <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b-2 border-emerald-100">
-                        <div>
-                          <p className="text-xs font-bold text-gray-600 mb-1">間取り</p>
-                          <p className="text-gray-900 font-bold">{property.layout}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-600 mb-1">面積</p>
-                          <p className="text-gray-900 font-bold">{property.area}m²</p>
+                    <Link href={`/properties/${property.id}`}>
+                      <div className="relative h-64 overflow-hidden">
+                        <Image
+                          src={property.images[0] || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'}
+                          alt={property.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                        <div className="absolute bottom-4 right-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg">
+                          ¥{property.rent.toLocaleString()}
                         </div>
                       </div>
 
-                      <div className="mb-4">
-                        <p className="text-xs font-bold text-gray-600 mb-1">最寄り駅</p>
-                        <p className="text-sm text-gray-900 font-medium">
-                          🚃 {property.nearest_station} 徒歩{property.station_distance}分
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+                          {property.title}
+                        </h3>
+                        <p className="text-sm text-gray-700 mb-4 font-medium">
+                          📍 {property.prefecture} {property.city}
                         </p>
-                      </div>
 
-                      <div className="flex flex-wrap gap-2">
-                        {property.features.slice(0, 3).map((feature, i) => (
-                          <span
-                            key={i}
-                            className="text-xs text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full font-medium border border-emerald-200"
-                          >
-                            {feature}
-                          </span>
-                        ))}
+                        <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b-2 border-emerald-100">
+                          <div>
+                            <p className="text-xs font-bold text-gray-600 mb-1">間取り</p>
+                            <p className="text-gray-900 font-bold">{property.layout}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-600 mb-1">面積</p>
+                            <p className="text-gray-900 font-bold">{property.area}m²</p>
+                          </div>
+                        </div>
+
+                        <div className="mb-4">
+                          <p className="text-xs font-bold text-gray-600 mb-1">最寄り駅</p>
+                          <p className="text-sm text-gray-900 font-medium">
+                            🚃 {property.nearest_station} 徒歩{property.station_distance}分
+                          </p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {property.features.slice(0, 3).map((feature, i) => (
+                            <span
+                              key={i}
+                              className="text-xs text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full font-medium border border-emerald-200"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

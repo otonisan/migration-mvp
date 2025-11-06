@@ -68,10 +68,10 @@ function SimulatorPageContent() {
             className="text-4xl font-light mb-2"
             style={{ fontFamily: 'var(--font-serif)' }}
           >
-            生活シミュレーター
+            山形生活シミュレーター 🍒
           </h1>
           <p className="text-gray-600 tracking-wide">
-            あなたがこのエリアに住んだら、どんな一日を過ごす？
+            あなたが山形に住んだら、どんな一日を過ごす？
           </p>
         </div>
       </header>
@@ -84,19 +84,19 @@ function SimulatorPageContent() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* エリア選択 */}
+            {/* エリア選択 - 山形エリアに限定 */}
             <div>
-              <label className="block text-sm text-gray-900 mb-2 font-medium">エリア</label>
+              <label className="block text-sm text-gray-900 mb-2 font-medium">山形のエリア</label>
               <select
                 value={areaId}
                 onChange={(e) => setAreaId(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded text-gray-900"
               >
-                <option value="yamagata_castle_west">山形市城西エリア</option>
-                <option value="yamagata_station">山形駅前エリア</option>
-                <option value="yamagata_nanokamachi">七日町エリア</option>
-                <option value="yamagata_kajo_park">霞城公園周辺</option>
-                <option value="tendo_onsen">天童温泉エリア</option>
+                <option value="yamagata_castle_west">山形市城西エリア 🏡</option>
+                <option value="yamagata_station">山形駅前エリア 🚃</option>
+                <option value="yamagata_nanokamachi">七日町エリア 🏯</option>
+                <option value="yamagata_kajo_park">霞城公園周辺 🌳</option>
+                <option value="tendo_onsen">天童温泉エリア ♨️</option>
               </select>
             </div>
 
@@ -144,7 +144,7 @@ function SimulatorPageContent() {
                 value={interests}
                 onChange={(e) => setInterests(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded text-gray-900"
-                placeholder="例: 子育て、自然、カフェ巡り"
+                placeholder="例: 子育て、温泉、果樹園巡り"
               />
             </div>
           </div>
@@ -152,11 +152,11 @@ function SimulatorPageContent() {
           <button
             onClick={handleGenerate}
             disabled={loading}
-            className={`w-full mt-6 px-6 py-3 bg-gray-900 text-white rounded transition-all font-medium ${
-              loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-800'
+            className={`w-full mt-6 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded transition-all font-medium ${
+              loading ? 'opacity-50 cursor-not-allowed' : 'hover:from-emerald-600 hover:to-teal-700 shadow-lg'
             }`}
           >
-            {loading ? 'AI生成中...' : '生活ストーリーを生成'}
+            {loading ? 'AI生成中... 🍒' : '山形での生活ストーリーを生成'}
           </button>
         </div>
 
@@ -176,7 +176,7 @@ function SimulatorPageContent() {
             {/* タイムライン */}
             <div className="bg-white border border-gray-300 rounded-lg p-8">
               <p className="text-xs tracking-[0.3em] text-gray-900 mb-6 uppercase font-medium">
-                Timeline - ある一日
+                Timeline - 山形でのある一日
               </p>
               <div className="space-y-6">
                 {simulation.timeline.map((item, index) => (
@@ -207,7 +207,7 @@ function SimulatorPageContent() {
             {/* おすすめスポット */}
             <div className="bg-white border border-gray-300 rounded-lg p-8">
               <p className="text-xs tracking-[0.3em] text-gray-900 mb-6 uppercase font-medium">
-                Recommended Spots
+                山形のおすすめスポット
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {simulation.recommended_spots.map((spot, index) => (
@@ -223,13 +223,13 @@ function SimulatorPageContent() {
             <div className="flex gap-4">
               <button
                 onClick={() => router.push('/vibe-map')}
-                className="flex-1 px-6 py-3 border border-gray-300 hover:border-gray-900 transition-all text-gray-900 font-medium"
+                className="flex-1 px-6 py-3 border border-gray-300 hover:border-emerald-500 transition-all text-gray-900 font-medium rounded"
               >
                 ← 空気感マップに戻る
               </button>
               <button
                 onClick={handleGenerate}
-                className="flex-1 px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all font-medium"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all font-medium rounded shadow-lg"
               >
                 別のストーリーを生成
               </button>
@@ -246,7 +246,7 @@ export default function SimulatorPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-16 h-16 border-4 border-gray-200 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-700 font-medium">読み込み中...</p>
         </div>
       </div>

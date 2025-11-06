@@ -14,7 +14,7 @@ function DiagnosticResultContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const recommendation = searchParams.get('recommendation') || '地方移住に最適';
+  const recommendation = searchParams.get('recommendation') || '山形移住に最適';
   const riskLevel = searchParams.get('risk') || '低';
 
   useEffect(() => {
@@ -74,61 +74,61 @@ function DiagnosticResultContent() {
 
   const getRecommendationDetails = () => {
     switch (recommendation) {
-      case '地方移住に最適':
+      case '山形移住に最適':
         return {
-          title: '🎉 移住準備OK！',
-          subtitle: '地方移住に最適です',
-          description: 'あなたの状況は地方移住に非常に適しています。素晴らしい新生活が待っています！',
-          emoji: '🌟',
+          title: '🎉 山形移住準備OK！',
+          subtitle: '山形での新生活に最適です',
+          description: 'あなたの状況は山形移住に非常に適しています。素晴らしい新生活が待っています！',
+          emoji: '🍒',
           details: [
-            '✅ 十分な貯蓄があり、移住後の生活も安定しています',
+            '✅ 十分な貯蓄があり、山形での生活も安定しています',
             '✅ リモートワークが可能で、仕事の継続性があります',
-            '✅ 家族構成も移住に適した状況です',
-            '✅ 地方での生活コストダウンにより、生活の質が向上します'
+            '✅ 家族構成も山形移住に適した状況です',
+            '✅ 山形での生活コストダウンにより、生活の質が向上します'
           ],
           nextSteps: [
-            '候補地の下見ツアーを計画する',
-            '移住支援制度を調べる',
-            '住居探しを始める',
+            '山形市内の下見ツアーを計画する',
+            '山形県の移住支援制度を調べる',
+            '温泉近くの住居を探し始める',
             '地域のコミュニティに参加する'
           ]
         };
       case '準備期間が必要':
         return {
-          title: '📅 準備を進めよう',
+          title: '📅 山形移住の準備を進めよう',
           subtitle: '準備期間を設けましょう',
-          description: 'もう少し準備を整えてから移住するのがおすすめです。着実に進めていきましょう！',
+          description: 'もう少し準備を整えてから山形移住するのがおすすめです。着実に進めていきましょう！',
           emoji: '⏰',
           details: [
             '💰 貯蓄をもう少し増やすと安心です',
-            '💼 移住後の収入源を確保しましょう',
+            '💼 山形での収入源を確保しましょう',
             '👨‍👩‍👧‍👦 家族との話し合いを重ねましょう',
-            '📍 移住先の情報収集を始めましょう'
+            '📍 山形の各エリアの情報収集を始めましょう'
           ],
           nextSteps: [
             '6ヶ月から1年の準備期間を設定',
             '毎月の貯蓄目標を立てる',
-            '移住先候補地の情報収集',
+            '山形市・天童市の情報収集',
             'リモートワークの可能性を探る'
           ]
         };
       default:
         return {
-          title: '🔍 慎重に計画しよう',
+          title: '🔍 山形移住を慎重に計画しよう',
           subtitle: '慎重な計画が必要です',
-          description: 'より詳細な計画を立ててから移住を検討しましょう。焦らず進めていきましょう！',
+          description: 'より詳細な計画を立ててから山形移住を検討しましょう。焦らず進めていきましょう！',
           emoji: '📋',
           details: [
             '💪 経済的な基盤をしっかり固めましょう',
-            '🔎 移住先での仕事を確保しましょう',
+            '🔎 山形での仕事を確保しましょう',
             '👥 家族の同意と理解を得ましょう',
             '🏠 段階的な移住を検討しましょう'
           ],
           nextSteps: [
             '1年以上の準備期間を設定',
-            '移住先での仕事探しを開始',
+            '山形での仕事探しを開始',
             '試験的な短期滞在を計画',
-            '専門家への相談を検討'
+            '山形移住コンシェルジュへ相談'
           ]
         };
     }
@@ -162,7 +162,7 @@ function DiagnosticResultContent() {
             onClick={() => router.push('/')}
             className="text-2xl font-bold text-gray-900 hover:text-emerald-600 transition-colors"
           >
-            🏡 MIGRATION
+            🍒 山形移住ナビ
           </button>
           <Link
             href="/dashboard"
@@ -183,7 +183,7 @@ function DiagnosticResultContent() {
             }`}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 border-2 border-emerald-200 rounded-full mb-6">
-              <span className="text-xs font-bold text-emerald-700">診断結果</span>
+              <span className="text-xs font-bold text-emerald-700">山形移住診断結果</span>
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
@@ -197,6 +197,34 @@ function DiagnosticResultContent() {
             <p className="text-lg font-medium text-gray-700 max-w-2xl mx-auto">
               {result.description}
             </p>
+          </div>
+
+          {/* おすすめエリア表示 */}
+          <div 
+            className={`mb-16 transition-all duration-1000 delay-100 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              🗺️ あなたにおすすめの山形エリア
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <Link href="/vibe-map" className="bg-white border-2 border-emerald-200 rounded-xl p-6 hover:shadow-xl hover:border-emerald-400 transition-all">
+                <div className="text-4xl mb-4 text-center">♨️</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">天童温泉エリア</h3>
+                <p className="text-sm text-gray-600 text-center">温泉とさくらんぼの街</p>
+              </Link>
+              <Link href="/vibe-map" className="bg-white border-2 border-emerald-200 rounded-xl p-6 hover:shadow-xl hover:border-emerald-400 transition-all">
+                <div className="text-4xl mb-4 text-center">👨‍👩‍👧‍👦</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">山形市城西エリア</h3>
+                <p className="text-sm text-gray-600 text-center">静かな住宅街、子育て◎</p>
+              </Link>
+              <Link href="/vibe-map" className="bg-white border-2 border-emerald-200 rounded-xl p-6 hover:shadow-xl hover:border-emerald-400 transition-all">
+                <div className="text-4xl mb-4 text-center">🏯</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">七日町エリア</h3>
+                <p className="text-sm text-gray-600 text-center">歴史とカフェ文化の街</p>
+              </Link>
+            </div>
           </div>
 
           {/* リスクレベル */}
@@ -320,21 +348,27 @@ function DiagnosticResultContent() {
 
           {/* アクションボタン */}
           <div 
-            className={`grid md:grid-cols-2 gap-6 max-w-3xl mx-auto transition-all duration-1000 delay-600 ${
+            className={`grid md:grid-cols-3 gap-6 max-w-4xl mx-auto transition-all duration-1000 delay-600 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             <Link
-              href="/plan-builder"
+              href="/vibe-map"
               className="block py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-center font-bold rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg hover:shadow-xl"
             >
-              📝 移住プランを作成
+              🗺️ 空気感マップ
+            </Link>
+            <Link
+              href="/properties"
+              className="block py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-center font-bold rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg hover:shadow-xl"
+            >
+              🏠 物件を探す
             </Link>
             <Link
               href="/"
               className="block py-5 border-2 border-emerald-500 text-emerald-600 text-center font-bold rounded-xl hover:bg-emerald-50 transition-all"
             >
-              🏠 ホームに戻る
+              ホームに戻る
             </Link>
           </div>
         </div>

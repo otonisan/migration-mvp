@@ -24,6 +24,7 @@ interface Area {
 export default function VibeMapPage() {
   const [timeOfDay, setTimeOfDay] = useState<'morning' | 'day' | 'evening' | 'night'>('day');
   const [selectedVibes, setSelectedVibes] = useState<string[]>(Object.keys(VIBE_TYPES));
+  const [ageGroup, setAgeGroup] = useState<string>('');
   const [areas, setAreas] = useState<Area[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedArea, setSelectedArea] = useState<Area | null>(null);
@@ -46,6 +47,29 @@ export default function VibeMapPage() {
     fetchAreas();
   }, [timeOfDay]);
 
+  // 年齢層が変わったら、おすすめの空気感を自動選択
+  useEffect(() => {
+    if (ageGroup === '') {
+      // すべて選択
+      setSelectedVibes(Object.keys(VIBE_TYPES));
+    } else if (ageGroup === '20s') {
+      // 20代：若者・活気、商業、カフェ重視
+      setSelectedVibes(['youthful_vibrant', 'commercial', 'heritage_tourism']);
+    } else if (ageGroup === '30s') {
+      // 30代：子育て、ファミリー、公園重視
+      setSelectedVibes(['family', 'quiet_residential', 'agriculture_nature']);
+    } else if (ageGroup === '40s') {
+      // 40代：ファミリー、静か、利便性重視
+      setSelectedVibes(['family', 'quiet_residential', 'commercial']);
+    } else if (ageGroup === '50s') {
+      // 50代：静か、自然、温泉重視
+      setSelectedVibes(['quiet_residential', 'onsen_relax', 'agriculture_nature']);
+    } else if (ageGroup === '60plus') {
+      // 60代以上：温泉、歴史、静か重視
+      setSelectedVibes(['onsen_relax', 'heritage_tourism', 'quiet_residential']);
+    }
+  }, [ageGroup]);
+
   const handleVibeToggle = (vibeId: string) => {
     if (selectedVibes.includes(vibeId)) {
       setSelectedVibes(selectedVibes.filter((v) => v !== vibeId));
@@ -59,9 +83,6 @@ export default function VibeMapPage() {
     setSelectedArea(area);
   };
 
-  // デバッグ用
-  console.log('selectedArea:', selectedArea);
-
   return (
     <div className="flex h-screen bg-white">
       {/* サイドバー */}
@@ -70,6 +91,8 @@ export default function VibeMapPage() {
         onTimeChange={setTimeOfDay}
         selectedVibes={selectedVibes}
         onVibeToggle={handleVibeToggle}
+        ageGroup={ageGroup}
+        onAgeGroupChange={setAgeGroup}
       />
 
       {/* 地図エリア */}
@@ -90,31 +113,65 @@ export default function VibeMapPage() {
           />
         )}
 
-        {/* 凡例 */}
-        <div className="absolute bottom-8 left-8 bg-white/98 backdrop-blur-sm p-6 border border-gray-300 rounded shadow-lg max-w-xs">
-          <p className="text-xs tracking-[0.3em] text-gray-900 mb-4 uppercase font-medium">Legend</p>
+       {/* 使い方ガイド */}
+        <div className="absolute top-24 left-8 bg-emerald-50/95 backdrop-blur-sm p-4 border-2 border-emerald-500 rounded-xl shadow-xl max-w-sm">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">💡</span>
+            <div>
+              <p className="text-sm font-bold text-emerald-900 mb-1">使い方</p>
+              <ul className="text-xs text-emerald-800 space-y-1">
+                <li>• 色付きの円をクリックで詳細表示</li>
+                <li>• 左のサイドバーで空気感を絞り込み</li>
+                <li>• 時間帯で雰囲気が変わります</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 凡例 - カラーユニバーサルデザイン対応 */}
+        <div className="absolute bottom-8 left-8 bg-white/98 backdrop-blur-sm p-6 border-2 border-gray-300 rounded-xl shadow-xl max-w-md">
+          <p className="text-sm tracking-[0.2em] text-gray-900 mb-4 uppercase font-bold flex items-center gap-2">
+            <span>🎨</span>
+            空気感の種類
+          </p>
           <div className="space-y-3">
             {Object.values(VIBE_TYPES)
               .filter((vibe) => selectedVibes.includes(vibe.id))
-              .slice(0, 5)
+              .slice(0, 6)
               .map((vibe) => (
                 <div key={vibe.id} className="flex items-center gap-3">
-                  <span
-                    className="w-4 h-4 rounded-full border border-gray-400"
-                    style={{ backgroundColor: vibe.hex }}
-                  />
+                  {/* アイコン */}
+                  <span className="text-2xl flex-shrink-0">
+                    {vibe.icon}
+                  </span>
+                  
+                  {/* 色 + 名前 + 説明 */}
                   <div className="flex-1">
-                    <div className="text-xs text-gray-900 tracking-wide font-medium">{vibe.name_ja}</div>
-                    <div className="text-xs text-gray-600">{vibe.name_en}</div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className="w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0"
+                        style={{ backgroundColor: vibe.hex }}
+                      />
+                      <span className="text-sm text-gray-900 font-bold">
+                        {vibe.name_ja}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      {vibe.description}
+                    </p>
                   </div>
                 </div>
               ))}
-            {selectedVibes.length > 5 && (
-              <div className="text-xs text-gray-700 tracking-wide font-medium">
-                +{selectedVibes.length - 5} more
-              </div>
-            )}
           </div>
+          
+          {/* 表示数が多い場合 */}
+          {selectedVibes.length > 6 && (
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <p className="text-xs text-gray-600">
+                他 {selectedVibes.length - 6} 種類の空気感を表示中
+              </p>
+            </div>
+          )}
         </div>
 
         {/* エリア数表示 */}
@@ -122,6 +179,16 @@ export default function VibeMapPage() {
           <div className="text-xs text-gray-900 tracking-wider uppercase mb-1 font-medium">Areas</div>
           <div className="text-2xl font-light text-gray-900" style={{ fontFamily: 'var(--font-serif)' }}>
             {areas.filter((a) => selectedVibes.includes(a.top_vibe)).length}
+          </div>
+        </div>
+        {/* マップ中心の説明 */}
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-white/98 backdrop-blur-sm px-6 py-3 border border-gray-300 rounded-lg shadow-lg max-w-md">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">📍</span>
+            <div>
+              <div className="text-xs text-gray-900 tracking-wider uppercase font-medium">Map Center</div>
+              <div className="text-sm text-gray-700">山形市 - 山形県の中心地</div>
+            </div>
           </div>
         </div>
       </main>

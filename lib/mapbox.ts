@@ -9,87 +9,87 @@ export const DEFAULT_VIEW = {
   zoom: 12,
 };
 
-// 空気感カラー定義
+// 山形特化：空気感カラー定義（カラーユニバーサルデザイン対応）
 export const VIBE_TYPES = {
-  calm_nature: {
-    id: 'calm_nature',
-    name_ja: '静穏・自然',
-    name_en: 'Calm & Nature',
-    hue: 120,
-    hex: '#2BB673',
-    keywords: ['緑', '静か', '散歩', '川', '公園'],
+  onsen_relax: {
+    id: 'onsen_relax',
+    name_ja: '温泉・リラックス',
+    name_en: 'Onsen & Relax',
+    icon: '♨️',
+    hue: 30,
+    hex: '#D2691E',
+    keywords: ['温泉', 'リラックス', '癒し', '静か'],
+    description: '温泉地が近く、リラックスできる環境',
   },
   family: {
     id: 'family',
-    name_ja: '家族・子育て',
+    name_ja: '子育て・ファミリー',
     name_en: 'Family',
-    hue: 50,
-    hex: '#F7C948',
-    keywords: ['保育園', '子ども', '安全', '公園'],
+    icon: '👨‍👩‍👧‍👦',
+    hue: 340,
+    hex: '#FF69B4',
+    keywords: ['保育園', '学校', '公園', '子育て'],
+    description: '保育園・学校が充実、公園も多い',
   },
-  creative: {
-    id: 'creative',
-    name_ja: 'クリエイティブ',
-    name_en: 'Creative',
-    hue: 280,
-    hex: '#9B5DE5',
-    keywords: ['ギャラリー', 'カフェ', 'アート'],
+  agriculture_nature: {
+    id: 'agriculture_nature',
+    name_ja: '農業・自然',
+    name_en: 'Agriculture',
+    icon: '🌾',
+    hue: 120,
+    hex: '#228B22',
+    keywords: ['田畑', '自然', '農業', '広々'],
+    description: '田畑が広がる自然豊かなエリア',
   },
-  nightlife: {
-    id: 'nightlife',
-    name_ja: 'ナイト・活気',
-    name_en: 'Nightlife',
-    hue: 15,
-    hex: '#FF6B6B',
-    keywords: ['バー', '音楽', '活気'],
-  },
-  heritage: {
-    id: 'heritage',
-    name_ja: '歴史・伝統',
-    name_en: 'Heritage',
-    hue: 20,
-    hex: '#A0522D',
-    keywords: ['神社', '古民家', '伝統'],
-  },
-  industrial: {
-    id: 'industrial',
-    name_ja: '産業・ギア感',
-    name_en: 'Industrial',
+  commercial: {
+    id: 'commercial',
+    name_ja: '商業・利便性',
+    name_en: 'Commercial',
+    icon: '🏪',
     hue: 210,
-    hex: '#5B6C8F',
-    keywords: ['倉庫', '工場', '職人'],
+    hex: '#1E90FF',
+    keywords: ['スーパー', 'お店', '便利', '駅近'],
+    description: 'スーパーやお店が近く便利',
   },
-  seaside: {
-    id: 'seaside',
-    name_ja: '海・リゾート',
-    name_en: 'Seaside',
-    hue: 190,
-    hex: '#56CFE1',
-    keywords: ['海', '風', '光'],
+  heritage_tourism: {
+    id: 'heritage_tourism',
+    name_ja: '歴史・観光',
+    name_en: 'Heritage',
+    icon: '🏯',
+    hue: 270,
+    hex: '#8B008B',
+    keywords: ['神社', '寺', '観光', '歴史'],
+    description: '歴史的建造物や観光地が多い',
   },
-  academic: {
-    id: 'academic',
-    name_ja: '学術・静学',
-    name_en: 'Academic',
-    hue: 220,
-    hex: '#3A86FF',
-    keywords: ['図書館', '大学', '静か'],
+  quiet_residential: {
+    id: 'quiet_residential',
+    name_ja: '静か・住宅地',
+    name_en: 'Quiet',
+    icon: '🏡',
+    hue: 0,
+    hex: '#696969',
+    keywords: ['閑静', '住宅街', '落ち着き', '静か'],
+    description: '閑静な住宅街、落ち着いた環境',
   },
-  luxury: {
-    id: 'luxury',
-    name_ja: '上質・洗練',
-    name_en: 'Luxury',
+  youthful_vibrant: {
+    id: 'youthful_vibrant',
+    name_ja: '若者・活気',
+    name_en: 'Vibrant',
+    icon: '✨',
     hue: 30,
-    hex: '#E76F51',
-    keywords: ['カフェ', '雑貨', '洗練'],
+    hex: '#FF8C00',
+    keywords: ['カフェ', '若者', '活気', 'おしゃれ'],
+    description: 'カフェや若者向けのお店が多い',
   },
-  startup: {
-    id: 'startup',
-    name_ja: 'スタートアップ',
-    name_en: 'Startup',
-    hue: 170,
-    hex: '#00C2A8',
-    keywords: ['コワーキング', 'IT', '起業'],
+  orchard: {
+    id: 'orchard',
+    name_ja: '果樹園エリア',
+    name_en: 'Orchard',
+    icon: '🍒',
+    hue: 0,
+    hex: '#DC143C',
+    keywords: ['さくらんぼ', 'ぶどう', '果樹園', 'フルーツ'],
+    description: 'さくらんぼやぶどう園が広がる',
   },
 };
 
@@ -100,7 +100,7 @@ export function getVibeHSL(
   timeOfDay: 'morning' | 'day' | 'evening' | 'night'
 ) {
   const vibe = VIBE_TYPES[vibeType];
-  const saturation = (score / 100) * 0.7; // 最大70%
+  const saturation = (score / 100) * 0.7;
 
   const lightnessMap = {
     morning: 0.80,

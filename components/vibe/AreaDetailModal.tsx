@@ -84,7 +84,7 @@ export default function AreaDetailModal({ area, timeOfDay, onClose }: AreaDetail
             </div>
           </div>
 
-          {/* 空気感スコア */}
+          {/* 空気感スコア - アイコン追加 */}
           <div className="p-8 border-b border-gray-200">
             <p className="text-xs tracking-[0.3em] text-gray-400 mb-4 uppercase">
               Vibe Scores - {timeOfDay}
@@ -98,23 +98,28 @@ export default function AreaDetailModal({ area, timeOfDay, onClose }: AreaDetail
                   <div key={vibeId}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
+                        {/* アイコン追加 */}
+                        <span className="text-2xl">{vibe.icon}</span>
                         <span
-                          className="w-3 h-3 rounded-full"
+                          className="w-4 h-4 rounded-full border-2 border-gray-300"
                           style={{ backgroundColor: vibe.hex }}
                         />
-                        <span className="text-sm text-gray-900">{vibe.name_ja}</span>
+                        <div>
+                          <div className="text-sm text-gray-900 font-bold">{vibe.name_ja}</div>
+                          <div className="text-xs text-gray-500">{vibe.description}</div>
+                        </div>
                         {index === 0 && (
-                          <span className="text-xs px-2 py-1 bg-gray-900 text-white rounded">
+                          <span className="text-xs px-2 py-1 bg-gray-900 text-white rounded ml-auto">
                             TOP
                           </span>
                         )}
                       </div>
-                      <span className="text-lg font-light text-gray-900" style={{ fontFamily: 'var(--font-serif)' }}>
+                      <span className="text-lg font-light text-gray-900 ml-4" style={{ fontFamily: 'var(--font-serif)' }}>
                         {score}
                       </span>
                     </div>
                     {/* プログレスバー */}
-                    <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div
                         className="h-full transition-all duration-500"
                         style={{
@@ -133,13 +138,13 @@ export default function AreaDetailModal({ area, timeOfDay, onClose }: AreaDetail
           <div className="p-8 space-y-3">
             <button
               onClick={handleGoToStory}
-              className="w-full px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all text-sm tracking-wide font-medium"
+              className="w-full px-6 py-3 bg-gray-900 text-white hover:bg-gray-800 transition-all text-sm tracking-wide font-medium rounded-lg"
             >
               このエリアの生活ストーリーを見る →
             </button>
             <button
               onClick={onClose}
-              className="w-full px-6 py-3 border border-gray-200 hover:border-gray-900 transition-all text-sm tracking-wide text-gray-900"
+              className="w-full px-6 py-3 border-2 border-gray-200 hover:border-gray-900 transition-all text-sm tracking-wide text-gray-900 rounded-lg"
             >
               閉じる
             </button>
