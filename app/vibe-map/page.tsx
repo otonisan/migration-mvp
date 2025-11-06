@@ -113,8 +113,8 @@ export default function VibeMapPage() {
           />
         )}
 
-       {/* 使い方ガイド */}
-        <div className="absolute top-24 left-8 bg-emerald-50/95 backdrop-blur-sm p-4 border-2 border-emerald-500 rounded-xl shadow-xl max-w-sm">
+       {/* 使い方ガイド - デスクトップのみ表示 */}
+        <div className="hidden lg:block absolute top-24 left-8 bg-emerald-50/95 backdrop-blur-sm p-4 border-2 border-emerald-500 rounded-xl shadow-xl max-w-sm">
           <div className="flex items-start gap-3">
             <span className="text-2xl">💡</span>
             <div>
@@ -128,35 +128,36 @@ export default function VibeMapPage() {
           </div>
         </div>
 
-        {/* 凡例 - カラーユニバーサルデザイン対応 */}
-        <div className="absolute bottom-8 left-8 bg-white/98 backdrop-blur-sm p-6 border-2 border-gray-300 rounded-xl shadow-xl max-w-md">
-          <p className="text-sm tracking-[0.2em] text-gray-900 mb-4 uppercase font-bold flex items-center gap-2">
-            <span>🎨</span>
-            空気感の種類
+        {/* 凡例 - レスポンシブ対応 */}
+        <div className="absolute bottom-4 left-4 lg:bottom-8 lg:left-8 bg-white/98 backdrop-blur-sm p-3 lg:p-6 border-2 border-gray-300 rounded-xl shadow-xl max-w-[280px] lg:max-w-md">
+          <p className="text-xs lg:text-sm tracking-[0.2em] text-gray-900 mb-2 lg:mb-4 uppercase font-bold flex items-center gap-2">
+            <span className="text-lg lg:text-xl">🎨</span>
+            <span className="hidden lg:inline">空気感の種類</span>
+            <span className="lg:hidden">空気感</span>
           </p>
-          <div className="space-y-3">
+          <div className="space-y-2 lg:space-y-3 max-h-[200px] lg:max-h-none overflow-y-auto">
             {Object.values(VIBE_TYPES)
               .filter((vibe) => selectedVibes.includes(vibe.id))
               .slice(0, 6)
               .map((vibe) => (
-                <div key={vibe.id} className="flex items-center gap-3">
+                <div key={vibe.id} className="flex items-center gap-2 lg:gap-3">
                   {/* アイコン */}
-                  <span className="text-2xl flex-shrink-0">
+                  <span className="text-lg lg:text-2xl flex-shrink-0">
                     {vibe.icon}
                   </span>
                   
                   {/* 色 + 名前 + 説明 */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5 lg:mb-1">
                       <span
-                        className="w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0"
+                        className="w-3 h-3 lg:w-4 lg:h-4 rounded-full border-2 border-gray-400 flex-shrink-0"
                         style={{ backgroundColor: vibe.hex }}
                       />
-                      <span className="text-sm text-gray-900 font-bold">
+                      <span className="text-xs lg:text-sm text-gray-900 font-bold truncate">
                         {vibe.name_ja}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-600 leading-relaxed">
+                    <p className="hidden lg:block text-xs text-gray-600 leading-relaxed">
                       {vibe.description}
                     </p>
                   </div>
@@ -166,23 +167,24 @@ export default function VibeMapPage() {
           
           {/* 表示数が多い場合 */}
           {selectedVibes.length > 6 && (
-            <div className="mt-3 pt-3 border-t border-gray-200">
+            <div className="mt-2 lg:mt-3 pt-2 lg:pt-3 border-t border-gray-200">
               <p className="text-xs text-gray-600">
-                他 {selectedVibes.length - 6} 種類の空気感を表示中
+                他 {selectedVibes.length - 6} 種類
               </p>
             </div>
           )}
         </div>
 
-        {/* エリア数表示 */}
-        <div className="absolute top-8 right-8 bg-white/98 backdrop-blur-sm px-6 py-3 border border-gray-300 rounded">
-          <div className="text-xs text-gray-900 tracking-wider uppercase mb-1 font-medium">Areas</div>
-          <div className="text-2xl font-light text-gray-900" style={{ fontFamily: 'var(--font-serif)' }}>
+        {/* エリア数表示 - レスポンシブ対応 */}
+        <div className="absolute top-4 right-4 lg:top-8 lg:right-8 bg-white/98 backdrop-blur-sm px-3 py-2 lg:px-6 lg:py-3 border border-gray-300 rounded shadow-lg">
+          <div className="text-xs text-gray-900 tracking-wider uppercase mb-0.5 lg:mb-1 font-medium">Areas</div>
+          <div className="text-xl lg:text-2xl font-light text-gray-900" style={{ fontFamily: 'var(--font-serif)' }}>
             {areas.filter((a) => selectedVibes.includes(a.top_vibe)).length}
           </div>
         </div>
-        {/* マップ中心の説明 */}
-        <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-white/98 backdrop-blur-sm px-6 py-3 border border-gray-300 rounded-lg shadow-lg max-w-md">
+
+        {/* マップ中心の説明 - デスクトップのみ */}
+        <div className="hidden lg:block absolute top-8 left-1/2 -translate-x-1/2 bg-white/98 backdrop-blur-sm px-6 py-3 border border-gray-300 rounded-lg shadow-lg max-w-md">
           <div className="flex items-center gap-2">
             <span className="text-2xl">📍</span>
             <div>
